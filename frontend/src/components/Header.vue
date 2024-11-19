@@ -1,4 +1,19 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+import { logout as apiLogout } from '../api/auth';
+import { useRouter } from 'vue-router';
+
+const logged = ref(sessionStorage.getItem("current_user") != undefined)
+
+function logout() {
+  apiLogout(async (_) => {
+    sessionStorage.clear();
+    let router = useRouter();
+    router.push("/login");
+    await router.go(0);
+  })
+}
+
 </script>
 
 <template>
@@ -12,6 +27,8 @@
       <RouterLink to="/alunos">Alunos</RouterLink>
       <RouterLink to="/materias">Materias</RouterLink>
       <RouterLink to="/aulas">Aulas</RouterLink>
+      <RouterLink v-if="!logged" to="/login">Login</RouterLink>
+      <button v-else @mousedown="logout">Logout</button>
     </div>
   </div>
 </template>
