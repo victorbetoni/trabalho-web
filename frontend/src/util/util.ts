@@ -5,5 +5,6 @@ export function allFilled(...refs: Ref<any>[]): boolean {
 }
 
 export function filterLetters(event: any, ref: Ref<any>) {
+  console.log(event.target.value.replace(/[^a-zA-Z]/g, ''))
   ref.value = event.target.value.replace(/[^a-zA-Z]/g, '');
 }

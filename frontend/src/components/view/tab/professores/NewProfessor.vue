@@ -3,7 +3,8 @@ import { vMaska } from "maska/vue"
 import { createProfessor } from "../../../../api/professores";
 import { ref } from "vue";
 import { fetchCEP } from "../../../../api/cep";
-import { allFilled, filterLetters } from "../../../../util/util";
+import { allFilled } from "../../../../util/util";
+import Loading from "../../../Loading.vue";
 
 const nome = ref("");
 const cpf = ref("");
@@ -42,6 +43,7 @@ function cadastrar() {
       bairro: bairro.value,
       rua: rua.value
     },
+    formacao: formacao.value,
     nome: nome.value,
     telefone: telefone.value
   }, (resp) => {
@@ -58,8 +60,14 @@ function fetchCep() {
     bairro.value = resp.bairro;
     cidade.value = `${resp.localidade} - ${resp.uf}`
     onChange()
+  }, () => {
+    errorMessage.value = "CEP inválido!"
   })
 }
+
+const handleNameChanged = () => nome.value = nome.value.replace(/\d+/g, '');
+const handleCPFChanged = () => cpf.value = cpf.value.replace(/[^0-9Xx.\-]/g, '');
+const handleTelefoneChanged = () => telefone.value = telefone.value.replace(/[^0-9\(\)\s-]/g, '');
 
 </script>
 
@@ -71,12 +79,12 @@ function fetchCep() {
     <div class="grid grid-cols-3 gap-y-4 gap-x-2 w-fit">
       <div class="col-span-2">
         <label>Nome</label>
-        <input :disabled="fetching" v-model="nome" @input="onChange" type="text" class="w-96">
+        <input :disabled="fetching" @input="(_:any) => {onChange(); handleNameChanged()}" v-model="nome" type="text" class="w-96">
       </div>
 
       <div class="col-span-1">
         <label>CPF</label>
-        <input :disabled="fetching" v-model="cpf" @input="(e) => {onChange()}" v-maska="'###.###.###-##'" placeholder="123.456.789-10" id="cpf" type="text" class="w-48">
+        <input @input="(_:any) => {onChange(); handleCPFChanged()}" :disabled="fetching" v-model="cpf" v-maska="'###.###.###-##'" placeholder="123.456.789-10" id="cpf" type="text" class="w-48">
       </div>
 
       <div class="col-span-2">
@@ -86,7 +94,7 @@ function fetchCep() {
 
       <div class="col-span-1">
         <label>Telefone</label>
-        <input :disabled="fetching" v-model="telefone" @input="onChange" v-maska="'(##) #####-####'" placeholder="(12) 34567-8910"  type="text">
+        <input :disabled="fetching" v-model="telefone" @input="(_:any) => {onChange(); handleTelefoneChanged()}" v-maska="'(##) #####-####'" placeholder="(12) 34567-8910"  type="text">
       </div>
     </div>
 
@@ -113,7 +121,7 @@ function fetchCep() {
 
       <div class="col-span-1">
         <label>Número</label>
-        <input :disabled="fetching" v-model="numero" @input="onChange" type="number" class="w-48" max="999999">
+        <input v-maska="'#####'" :disabled="fetching" v-model="numero" @input="onChange" type="number" class="w-48" max="999999">
       </div>
 
       <div class="col-span-1">
@@ -128,6 +136,9 @@ function fetchCep() {
       
     </div>
     <p class="text-xs font-grotesk text-red-400 font-bold">{{ errorMessage }}</p>
-    <button :disabled="fetching" @mousedown="cadastrar" class="w-32">Cadastrar</button>
+    <div class="flex gap-x-4">
+      <button :disabled="fetching" @mousedown="cadastrar" class="w-32">Cadastrar</button>
+      <Loading v-if="fetching"/>
+    </div>
   </div>
 </template>
