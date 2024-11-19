@@ -31,14 +31,15 @@ export function POST<A,T>(req: APIRequest<A>, handler: Handler<T>) {
   fetch(`${req.endpoint}/${req.route}`,{
     body: req.body == null ? "{}" : JSON.stringify(req.body),
     method: "POST",
-    headers: headers
+    headers: headers,
+    credentials: 'include',
   }).then(x => x.json()).then(j => handler(j as APIResponse<T>))
 }
 
 export function GET<A,T>(req: APIRequest<A>, handler: Handler<T>) {
-  console.log(`${req.endpoint}/${req.route}${req.query != null ? "?" + new URLSearchParams(req.query).toString() : ""}`)
   fetch(`${req.endpoint}/${req.route}${req.query != null ? "?" + new URLSearchParams(req.query).toString() : ""}`, {
     method: "GET",
-    headers: headers
+    headers: headers,
+    credentials: 'include',
   }).then(x => x.json()).then(j => handler(j as APIResponse<T>))
 }

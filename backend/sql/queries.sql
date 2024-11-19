@@ -1,5 +1,5 @@
 -- name: CreateProfessor :exec
-INSERT INTO Professores (CPF, Nome) VALUES (?,?);
+INSERT INTO Professores (CPF, Nome, Formacao, Telefone, Rua, Bairro, CEP, Cidade, Numero) VALUES (?,?,?,?,?,?,?,?,?);
 
 -- name: CreateAula :exec
 INSERT INTO Aulas (ID, MateriaID, Professor, CargaHorariaMinutos, Data) VALUES (?,?,?,?,?);
@@ -62,3 +62,6 @@ DELETE FROM Materias WHERE ID = ?;
 
 -- name: DeleteAula :exec
 DELETE FROM Aulas WHERE ID = ?;
+
+-- name: FindLogin :one
+SELECT Senha FROM Login WHERE Username = ?;

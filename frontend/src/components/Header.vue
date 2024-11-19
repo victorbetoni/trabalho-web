@@ -5,12 +5,13 @@ import { useRouter } from 'vue-router';
 
 const logged = ref(sessionStorage.getItem("current_user") != undefined)
 
+let router = useRouter();
+
 function logout() {
   apiLogout(async (_) => {
     sessionStorage.clear();
-    let router = useRouter();
-    router.push("/login");
-    await router.go(0);
+    await router.push("/login");
+    router.go(0);
   })
 }
 
@@ -22,10 +23,9 @@ function logout() {
       <img src="/logo.svg" class="h-6 my-auto"/>
       <h1 class="text-2xl font-bold">Classee</h1>
     </div>
-    <div class="flex gap-x-8 my-auto">
+    <div class="flex gap-x-8 my-auto items-center">
       <RouterLink to="/professores">Professores</RouterLink>
       <RouterLink to="/alunos">Alunos</RouterLink>
-      <RouterLink to="/materias">Materias</RouterLink>
       <RouterLink to="/aulas">Aulas</RouterLink>
       <RouterLink v-if="!logged" to="/login">Login</RouterLink>
       <button v-else @mousedown="logout">Logout</button>

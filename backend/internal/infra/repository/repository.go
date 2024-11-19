@@ -29,6 +29,10 @@ func GetProfessorRepository(ctx context.Context, u *uow.Uow) repository.Professo
 	return getRepository[repository.ProfessorRepositoryInterface](ctx, u, "ProfessorRepository")
 }
 
+func GetLoginRepository(ctx context.Context, u *uow.Uow) repository.LoginRepositoryInterface {
+	return getRepository[repository.LoginRepositoryInterface](ctx, u, "LoginRepository")
+}
+
 func getRepository[T repository.RepositoryInterface](ctx context.Context, u *uow.Uow, name string) T {
 	repo, err := u.GetRepository(ctx, name)
 	if err != nil {

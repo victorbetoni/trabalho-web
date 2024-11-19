@@ -2,11 +2,15 @@
 import { ref } from 'vue';
 import { login as apiLogin } from '../../api/auth'; 
 import { allFilled } from '../../util/util';
+import { useRoute, useRouter } from 'vue-router';
+import Loading from '../Loading.vue';
 
 const username = ref("");
 const password = ref("");
 const errorMsg = ref("");
 const fetching = ref(false);
+
+const router = useRouter();
 
 function login() {
   fetching.value = true;
@@ -14,13 +18,15 @@ function login() {
     errorMsg.value = "Preencha todos os campos.";
     return
   }
-  apiLogin(username.value, password.value, (resp) => {
+  apiLogin(username.value, password.value, async (resp) => {
     fetching.value = false;
     if(resp.status != 200) {
       errorMsg.value = resp.message!;
       return;
     }
-    localStorage.setItem("current_user", resp.body!)
+    sessionStorage.setItem("current_user", resp.body!)
+    await router.push("/professores");
+    router.go(0);
   })
   }
 
@@ -47,7 +53,7 @@ function login() {
       <p v-if="errorMsg != ''" class="text-xs text-red-400 font-grotesk">{{ errorMsg }}</p>
       <div class="flex gap-x-4">
         <button :disabled="fetching" @mousedown="login" class="w-32">Entrar</button>
-        <Loading21 v-if="fetching"/>
+        <Loading v-if="fetching"/>
       </div>
     </div>
   </div>

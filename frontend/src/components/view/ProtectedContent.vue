@@ -1,5 +1,5 @@
 <template>
-
+  <slot></slot>
 </template>
 
 <script setup lang="ts">
@@ -11,8 +11,8 @@ const router = useRouter();
 checkSession((resp) => {
   if(resp.status != 200) {
     logout(async (_) => {
-      router.push("/login");
-      await router.go(0)
+      await router.push("/login");
+      router.go(0)
     })
   }
 })

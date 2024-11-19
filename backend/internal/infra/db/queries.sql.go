@@ -77,16 +77,33 @@ func (q *Queries) CreatePresenca(ctx context.Context, arg CreatePresencaParams) 
 }
 
 const createProfessor = `-- name: CreateProfessor :exec
-INSERT INTO Professores (CPF, Nome) VALUES (?,?)
+INSERT INTO Professores (CPF, Nome, Formacao, Telefone, Rua, Bairro, CEP, Cidade, Numero) VALUES (?,?,?,?,?,?,?,?,?)
 `
 
 type CreateProfessorParams struct {
-	Cpf  string `json:"cpf"`
-	Nome string `json:"nome"`
+	Cpf      string `json:"cpf"`
+	Nome     string `json:"nome"`
+	Formacao string `json:"formacao"`
+	Telefone string `json:"telefone"`
+	Rua      string `json:"rua"`
+	Bairro   string `json:"bairro"`
+	Cep      string `json:"cep"`
+	Cidade   string `json:"cidade"`
+	Numero   string `json:"numero"`
 }
 
 func (q *Queries) CreateProfessor(ctx context.Context, arg CreateProfessorParams) error {
-	_, err := q.db.ExecContext(ctx, createProfessor, arg.Cpf, arg.Nome)
+	_, err := q.db.ExecContext(ctx, createProfessor,
+		arg.Cpf,
+		arg.Nome,
+		arg.Formacao,
+		arg.Telefone,
+		arg.Rua,
+		arg.Bairro,
+		arg.Cep,
+		arg.Cidade,
+		arg.Numero,
+	)
 	return err
 }
 
@@ -239,6 +256,17 @@ func (q *Queries) FindAula(ctx context.Context, arg FindAulaParams) ([]FindAulaR
 	return items, nil
 }
 
+const findLogin = `-- name: FindLogin :one
+SELECT Senha FROM Login WHERE Username = ?
+`
+
+func (q *Queries) FindLogin(ctx context.Context, username string) (string, error) {
+	row := q.db.QueryRowContext(ctx, findLogin, username)
+	var senha string
+	err := row.Scan(&senha)
+	return senha, err
+}
+
 const findMateria = `-- name: FindMateria :many
 SELECT id, nome, cargahorariaminutos FROM Materias
 WHERE (? = "" OR Nome LIKE ?) 
@@ -284,7 +312,7 @@ func (q *Queries) FindMateria(ctx context.Context, arg FindMateriaParams) ([]Mat
 }
 
 const findProfessores = `-- name: FindProfessores :many
-SELECT cpf, nome FROM Professores
+SELECT cpf, nome, formacao, telefone, rua, bairro, cidade, cep, numero FROM Professores
 WHERE (? = "" OR CPF LIKE ?) 
 AND (? = NULL OR Nome LIKE ?)
 LIMIT ? OFFSET ?
@@ -313,7 +341,17 @@ func (q *Queries) FindProfessores(ctx context.Context, arg FindProfessoresParams
 	var items []Professore
 	for rows.Next() {
 		var i Professore
-		if err := rows.Scan(&i.Cpf, &i.Nome); err != nil {
+		if err := rows.Scan(
+			&i.Cpf,
+			&i.Nome,
+			&i.Formacao,
+			&i.Telefone,
+			&i.Rua,
+			&i.Bairro,
+			&i.Cidade,
+			&i.Cep,
+			&i.Numero,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)

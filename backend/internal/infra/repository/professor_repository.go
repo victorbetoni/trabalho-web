@@ -14,7 +14,7 @@ type ProfessorRepository struct {
 	*db.Queries
 }
 
-func NewGenRepository(dbConn *sql.DB) *ProfessorRepository {
+func NewProfessorRepository(dbConn *sql.DB) *ProfessorRepository {
 	return &ProfessorRepository{
 		dbConn:  dbConn,
 		Queries: db.New(dbConn),
@@ -57,8 +57,15 @@ func (r *ProfessorRepository) FindOne(ctx context.Context, filter entity.Profess
 
 func (r *ProfessorRepository) Create(ctx context.Context, professor *entity.Professor) error {
 	return r.Queries.CreateProfessor(ctx, db.CreateProfessorParams{
-		Cpf:  professor.CPF,
-		Nome: professor.Nome,
+		Cpf:      professor.CPF,
+		Nome:     professor.Nome,
+		Formacao: professor.Formacao,
+		Telefone: professor.Telefone,
+		Rua:      professor.Endereco.Rua,
+		Bairro:   professor.Endereco.Bairro,
+		Cep:      professor.Endereco.CEP,
+		Cidade:   professor.Endereco.Cidade,
+		Numero:   professor.Endereco.Numero,
 	})
 }
 

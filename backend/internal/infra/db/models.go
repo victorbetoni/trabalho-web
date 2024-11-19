@@ -21,6 +21,11 @@ type Aula struct {
 	Professor           string    `json:"professor"`
 }
 
+type Login struct {
+	Username string `json:"username"`
+	Senha    string `json:"senha"`
+}
+
 type Materia struct {
 	ID                  string `json:"id"`
 	Nome                string `json:"nome"`
@@ -34,6 +39,13 @@ type Presenca struct {
 }
 
 type Professore struct {
-	Cpf  string `json:"cpf"`
-	Nome string `json:"nome"`
+	Cpf      string `json:"cpf"`
+	Nome     string `json:"nome"`
+	Formacao string `json:"formacao"`
+	Telefone string `json:"telefone"`
+	Rua      string `json:"rua"`
+	Bairro   string `json:"bairro"`
+	Cidade   string `json:"cidade"`
+	Cep      string `json:"cep"`
+	Numero   string `json:"numero"`
 }

@@ -15,3 +15,7 @@ type ProfessorRepositoryInterface interface {
 	Delete(ctx context.Context, cpf string) error
 	RepositoryInterface
 }
+
+type LoginRepositoryInterface interface {
+	FindLogin(ctx context.Context, username string) (string, error)
+}

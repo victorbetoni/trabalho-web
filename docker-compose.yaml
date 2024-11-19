@@ -17,8 +17,6 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_PASSWORD: root
       MYSQL_DATABASE: trabalhoweb
-    volumes:
-      - ./backend/sql/schema.sql:/docker-entrypoint-initdb.d/0_init.sql
     ports:
       - "3310:3306"
     <<: *service_defaults

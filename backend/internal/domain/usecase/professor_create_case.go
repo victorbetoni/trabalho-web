@@ -10,8 +10,11 @@ import (
 )
 
 type ProfessorCreateCaseInput struct {
-	CPF  string `json:"cpf"`
-	Nome string `json:"nome"`
+	CPF      string          `json:"cpf"`
+	Formacao string          `json:"formacao"`
+	Telefone string          `json:"telefone"`
+	Nome     string          `json:"nome"`
+	Endereco entity.Endereco `json:"endereco"`
 }
 
 func (i *ProfessorCreateCaseInput) Valid() error {
@@ -43,8 +46,11 @@ func (u *ProfessorCreateCase) Execute(ctx context.Context, in ProfessorCreateCas
 		}
 
 		prof := &entity.Professor{
-			CPF:  in.CPF,
-			Nome: in.Nome,
+			CPF:      in.CPF,
+			Nome:     in.Nome,
+			Formacao: in.Formacao,
+			Telefone: in.Telefone,
+			Endereco: in.Endereco,
 		}
 
 		if err := repo.Create(ctx, prof); err != nil {
