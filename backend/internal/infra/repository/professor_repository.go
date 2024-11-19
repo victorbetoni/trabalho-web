@@ -65,7 +65,7 @@ func (r *ProfessorRepository) Create(ctx context.Context, professor *entity.Prof
 		Bairro:   professor.Endereco.Bairro,
 		Cep:      professor.Endereco.CEP,
 		Cidade:   professor.Endereco.Cidade,
-		Numero:   professor.Endereco.Numero,
+		Numero:   int32(professor.Endereco.Numero),
 	})
 }
 

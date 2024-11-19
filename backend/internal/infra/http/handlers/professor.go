@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"victorbetoni/trabalho-web/internal/domain/usecase"
 	"victorbetoni/trabalho-web/internal/infra/util"
 	"victorbetoni/trabalho-web/pkg/uow"
@@ -11,6 +12,8 @@ import (
 func PostProfessor(ctx *gin.Context) util.Response {
 	input := usecase.ProfessorCreateCaseInput{}
 	if err := ctx.BindJSON(&input); err != nil {
+		fmt.Println(err.Error())
+		fmt.Println("FUDEU AQUI")
 		return util.RespBadRequest
 	}
 	return usecase.NewProfessorCreateCase(uow.Current()).Execute(ctx, input)

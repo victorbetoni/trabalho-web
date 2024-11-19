@@ -47,5 +47,5 @@ type Professore struct {
 	Bairro   string `json:"bairro"`
 	Cidade   string `json:"cidade"`
 	Cep      string `json:"cep"`
-	Numero   string `json:"numero"`
+	Numero   int32  `json:"numero"`
 }

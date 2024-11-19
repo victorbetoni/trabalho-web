@@ -9,9 +9,11 @@ import (
 
 func ValidCPF(cpf string) bool {
 	numeros := regexp.MustCompile(`\D`).ReplaceAllString(cpf, "")
-	if len(cpf) != 11 || strings.Repeat(string(cpf[0]), 11) == cpf {
+	if len(numeros) != 11 || strings.Repeat(string(numeros[0]), 11) == numeros {
 		return false
 	}
+
+	fmt.Println(numeros)
 
 	// ChatGPT, confesso.
 	pesos1 := []int{10, 9, 8, 7, 6, 5, 4, 3, 2}
@@ -20,7 +22,7 @@ func ValidCPF(cpf string) bool {
 	pesos2 := []int{11, 10, 9, 8, 7, 6, 5, 4, 3, 2}
 	digito2 := calcularDigitoVerificador(numeros, pesos2)
 
-	digitoVerificador := cpf[9:]
+	digitoVerificador := numeros[9:]
 	return fmt.Sprintf("%d%d", digito1, digito2) == digitoVerificador
 
 }

@@ -89,7 +89,7 @@ type CreateProfessorParams struct {
 	Bairro   string `json:"bairro"`
 	Cep      string `json:"cep"`
 	Cidade   string `json:"cidade"`
-	Numero   string `json:"numero"`
+	Numero   int32  `json:"numero"`
 }
 
 func (q *Queries) CreateProfessor(ctx context.Context, arg CreateProfessorParams) error {

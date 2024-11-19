@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"errors"
+	"regexp"
 	"victorbetoni/trabalho-web/internal/domain/entity"
 	"victorbetoni/trabalho-web/internal/infra/repository"
 	"victorbetoni/trabalho-web/internal/infra/util"
@@ -10,11 +11,12 @@ import (
 )
 
 type ProfessorCreateCaseInput struct {
-	CPF      string          `json:"cpf"`
-	Formacao string          `json:"formacao"`
-	Telefone string          `json:"telefone"`
-	Nome     string          `json:"nome"`
-	Endereco entity.Endereco `json:"endereco"`
+	CPF        string          `json:"cpf"`
+	Formacao   string          `json:"formacao"`
+	Telefone   string          `json:"telefone"`
+	Nome       string          `json:"nome"`
+	Endereco   entity.Endereco `json:"endereco"`
+	AulasDadas int             `json:"aulasDadas"`
 }
 
 func (i *ProfessorCreateCaseInput) Valid() error {
@@ -46,7 +48,7 @@ func (u *ProfessorCreateCase) Execute(ctx context.Context, in ProfessorCreateCas
 		}
 
 		prof := &entity.Professor{
-			CPF:      in.CPF,
+			CPF:      regexp.MustCompile(`\D`).ReplaceAllString(in.CPF, ""),
 			Nome:     in.Nome,
 			Formacao: in.Formacao,
 			Telefone: in.Telefone,

@@ -5,5 +5,5 @@ type Endereco struct {
 	Rua    string `json:"rua"`
 	Bairro string `json:"bairro"`
 	Cidade string `json:"cidade"`
-	Numero string `json:"numero"`
+	Numero int    `json:"numero"`
 }
