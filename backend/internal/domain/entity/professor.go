@@ -1,7 +1,7 @@
 package entity
 
 type Professor struct {
-	CPF      string   `json:"id"`
+	CPF      string   `json:"cpf"`
 	Nome     string   `json:"nome"`
 	Formacao string   `json:"formacao"`
 	Telefone string   `json:"telefone"`

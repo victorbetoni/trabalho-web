@@ -314,7 +314,7 @@ func (q *Queries) FindMateria(ctx context.Context, arg FindMateriaParams) ([]Mat
 const findProfessores = `-- name: FindProfessores :many
 SELECT cpf, nome, formacao, telefone, rua, bairro, cidade, cep, numero FROM Professores
 WHERE (? = "" OR CPF LIKE ?) 
-AND (? = NULL OR Nome LIKE ?)
+AND (? = "" OR Nome LIKE ?)
 LIMIT ? OFFSET ?
 `
 

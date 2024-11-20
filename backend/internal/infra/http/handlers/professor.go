@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"strconv"
 	"victorbetoni/trabalho-web/internal/domain/usecase"
 	"victorbetoni/trabalho-web/internal/infra/util"
 	"victorbetoni/trabalho-web/pkg/uow"
@@ -20,9 +21,22 @@ func PostProfessor(ctx *gin.Context) util.Response {
 }
 
 func ListProfessores(ctx *gin.Context) util.Response {
-	input := usecase.ProfessorListCaseInput{}
-	if err := ctx.BindJSON(&input); err != nil {
-		return util.RespBadRequest
+
+	page, err := strconv.Atoi(ctx.Query("page"))
+	if err != nil {
+		return util.BadRequestErr(err)
+	}
+
+	limit, err := strconv.Atoi(ctx.Query("limit"))
+	if err != nil {
+		return util.BadRequestErr(err)
+	}
+
+	input := usecase.ProfessorListCaseInput{
+		CPF:   ctx.Query("cpf"),
+		Nome:  ctx.Query("nome"),
+		Limit: limit,
+		Page:  page,
 	}
 	return usecase.NewProfessorListCase(uow.Current()).Execute(ctx, input)
 }

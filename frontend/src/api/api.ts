@@ -5,6 +5,12 @@ export interface APIResponse<T> {
   body: T | null;
 }
 
+function responseFrom<T>(j:any): APIResponse<T> {
+  let resp = j as APIResponse<T>
+  resp.body = JSON.parse(j.body) as T
+  return resp
+}
+
 export class APIRequest<T> {
   public route: string;
   public endpoint: string | null = null; 
@@ -12,10 +18,8 @@ export class APIRequest<T> {
   public query: T | null;
 
   constructor(route: string, endpoint: string | null, body: T | null, query: T | null) {
-    console.log(import.meta.env.VITE_API_HOST)
     this.route = route;
     this.endpoint = endpoint ?? import.meta.env.VITE_API_HOST
-    console.log("SDASDASD " + endpoint)
     this.body = body;
     this.query = query;  
   }
@@ -33,13 +37,16 @@ export function POST<A,T>(req: APIRequest<A>, handler: Handler<T>) {
     method: "POST",
     headers: headers,
     credentials: 'include',
-  }).then(x => x.json()).then(j => handler(j as APIResponse<T>))
+  }).then(x => x.json()).then(j => handler(responseFrom(j)))
 }
 
 export function GET<A,T>(req: APIRequest<A>, handler: Handler<T>) {
-  fetch(`${req.endpoint}/${req.route}${req.query != null ? "?" + new URLSearchParams(req.query).toString() : ""}`, {
+  let filtered: Record<string,any> = req.query == null ? {} : Object.fromEntries(
+    Object.entries(req.query).filter(([_, value]) => value !== null && value !== "")
+  );
+  fetch(`${req.endpoint}/${req.route}${req.query != null ? "?" + new URLSearchParams(filtered).toString() : ""}`, {
     method: "GET",
     headers: headers,
     credentials: 'include',
-  }).then(x => x.json()).then(j => handler(j as APIResponse<T>))
+  }).then(x => x.json()).then(j => handler(responseFrom(j)))
 }

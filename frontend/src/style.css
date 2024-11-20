@@ -46,11 +46,11 @@
   }
 
   tr {
-    @apply gap-x-2 flex
+    @apply gap-x-2 py-4 flex border-b-[1px] border-indigo-100
   }
 
   th {
-    @apply text-left text-indigo-500 font-grotesk text-sm
+    @apply text-left text-indigo-500 font-grotesk text-sm 
   }
 
   input[type="number"] {

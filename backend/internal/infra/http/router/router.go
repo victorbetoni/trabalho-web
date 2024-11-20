@@ -16,6 +16,7 @@ type route struct {
 }
 
 var routes = []route{
+	{path: "/professor", requireAuth: true, method: "GET", handler: handlers.ListProfessores},
 	{path: "/professor", requireAuth: true, method: "POST", handler: handlers.PostProfessor},
 	{path: "/login", requireAuth: false, method: "POST", handler: handlers.Login},
 	{path: "/logout", requireAuth: false, method: "GET", handler: handlers.Logout},

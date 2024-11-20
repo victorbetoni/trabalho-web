@@ -34,6 +34,20 @@ function cadastrar() {
     return
   }
   fetching.value = true
+  console.log(JSON.stringify({
+    aulasDadas: 0,
+    cpf: cpf.value,
+    endereco: {
+      cep: cep.value,
+      cidade: cidade.value,
+      numero: numero.value,
+      bairro: bairro.value,
+      rua: rua.value
+    },
+    formacao: formacao.value,
+    nome: nome.value,
+    telefone: telefone.value
+  }))
   createProfessor({
     aulasDadas: 0,
     cpf: cpf.value,

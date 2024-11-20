@@ -39,7 +39,16 @@ func (r *ProfessorRepository) Find(ctx context.Context, filter entity.ProfessorF
 
 	return *streams.Map(streams.StreamOf(p...), func(p db.Professore) *entity.Professor {
 		return &entity.Professor{
-			CPF:  p.Cpf,
+			CPF:      p.Cpf,
+			Formacao: p.Formacao,
+			Telefone: p.Telefone,
+			Endereco: entity.Endereco{
+				CEP:    p.Cep,
+				Rua:    p.Rua,
+				Bairro: p.Bairro,
+				Cidade: p.Cidade,
+				Numero: int(p.Numero),
+			},
 			Nome: p.Nome,
 		}
 	}).ToSlice(), nil

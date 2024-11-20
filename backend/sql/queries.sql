@@ -16,7 +16,7 @@ INSERT INTO Presencas (AulaID, AlunoGRR) VALUES (?,?);
 -- name: FindProfessores :many
 SELECT * FROM Professores
 WHERE (sqlc.arg(cpf) = "" OR CPF LIKE sqlc.arg(cpf)) 
-AND (sqlc.arg(nome) = NULL OR Nome LIKE sqlc.arg(nome))
+AND (sqlc.arg(nome) = "" OR Nome LIKE sqlc.arg(nome))
 LIMIT ? OFFSET ?;
 
 -- name: FindAula :many
