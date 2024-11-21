@@ -45,3 +45,11 @@ func UpdateProfessor(ctx *gin.Context) util.Response {
 	}
 	return usecase.NewProfessorUpdateCase(uow.Current()).Execute(ctx, input)
 }
+
+func DeleteProfessor(ctx *gin.Context) util.Response {
+	input := usecase.ProfessorDeleteCaseInput{}
+	if err := ctx.BindJSON(&input); err != nil {
+		return util.RespBadRequest
+	}
+	return usecase.NewProfessorDeleteCase(uow.Current()).Execute(ctx, input)
+}

@@ -19,6 +19,8 @@ var routes = []route{
 	{path: "/professor", requireAuth: true, method: "GET", handler: handlers.ListProfessores},
 	{path: "/professor", requireAuth: true, method: "POST", handler: handlers.PostProfessor},
 	{path: "/professor", requireAuth: true, method: "PUT", handler: handlers.UpdateProfessor},
+	{path: "/professor", requireAuth: true, method: "DELETE", handler: handlers.DeleteProfessor},
+
 	{path: "/login", requireAuth: false, method: "POST", handler: handlers.Login},
 	{path: "/logout", requireAuth: false, method: "GET", handler: handlers.Logout},
 	{path: "/checkSession", requireAuth: true, method: "GET", handler: handlers.CheckSession},
@@ -27,9 +29,10 @@ var routes = []route{
 type httpMethod func(e *gin.Engine, path string, hf gin.HandlerFunc)
 
 var methods = map[string]httpMethod{
-	"POST": post,
-	"GET":  get,
-	"PUT":  put,
+	"POST":   post,
+	"GET":    get,
+	"PUT":    put,
+	"DELETE": delete,
 }
 
 func Build() *gin.Engine {
@@ -39,7 +42,7 @@ func Build() *gin.Engine {
 		c.Header("Access-Control-Allow-Origin", "http://localhost:8091")
 		c.Header("Access-Control-Allow-Credentials", "true")
 		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Header("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+		c.Header("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(204)
 			return
@@ -68,4 +71,8 @@ func get(e *gin.Engine, path string, hf gin.HandlerFunc) {
 
 func put(e *gin.Engine, path string, hf gin.HandlerFunc) {
 	e.PUT(path, hf)
+}
+
+func delete(e *gin.Engine, path string, hf gin.HandlerFunc) {
+	e.DELETE(path, hf)
 }

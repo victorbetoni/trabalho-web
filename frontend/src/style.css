@@ -10,7 +10,7 @@
   }
 
   .tab-header {
-    @apply font-grotesk font-bold text-xs border-l-[1px] border-r-[1px] border-t-[2px] min-w-36 py-4 text-center cursor-pointer rounded-md
+    @apply font-grotesk font-bold text-xs border-l-[1px] border-r-[1px] border-t-[2px] min-w-24 px-2 md:min-w-36 py-4 text-center cursor-pointer rounded-md
   }
 
   .tab-header h6  {

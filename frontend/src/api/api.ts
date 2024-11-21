@@ -51,10 +51,22 @@ export function PUT<A,T>(req: APIRequest<A>, handler: Handler<T>) {
 
 export function GET<A,T>(req: APIRequest<A>, handler: Handler<T>) {
   let filtered: Record<string,any> = req.query == null ? {} : Object.fromEntries(
-    Object.entries(req.query).filter(([_, value]) => value !== null && value !== "")
+    Object.entries(req.query).filter(([_, value]) => value != null && value != undefined && value != "")
   );
   fetch(`${req.endpoint}/${req.route}${req.query != null ? "?" + new URLSearchParams(filtered).toString() : ""}`, {
     method: "GET",
+    headers: headers,
+    credentials: 'include',
+  }).then(x => x.json()).then(j => handler(responseFrom(j)))
+}
+
+export function DELETE<A,T>(req: APIRequest<A>, handler: Handler<T>) {
+  let filtered: Record<string,any> = req.query == null ? {} : Object.fromEntries(
+    Object.entries(req.query).filter(([_, value]) => value != null && value != undefined && value != "")
+  );
+  fetch(`${req.endpoint}/${req.route}${req.query != null ? "?" + new URLSearchParams(filtered).toString() : ""}`, {
+    method: "DELETE",
+    body: req.body == null ? "{}" : JSON.stringify(req.body),
     headers: headers,
     credentials: 'include',
   }).then(x => x.json()).then(j => handler(responseFrom(j)))

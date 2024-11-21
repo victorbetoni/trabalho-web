@@ -1,5 +1,5 @@
 import type Professor from "../model/Professor";
-import { APIRequest, GET, POST, PUT, type Handler } from "./api";
+import { APIRequest, DELETE, GET, POST, PUT, type Handler } from "./api";
 
 export function findProfessores(nome: string, cpf: string, page: number, handler: Handler<Professor[]>) {
   GET(new APIRequest("professor", null, null, {
@@ -26,3 +26,10 @@ export function updateProfessor(prof: Professor, handler: Handler<any>) {
 export function createProfessor(prof: Professor, handler: Handler<any>) {
   POST(new APIRequest("professor", null, prof, null), handler)
 }
+
+export function deleteProfessor(cpf: string, handler: Handler<any>) {
+  DELETE(new APIRequest("professor", null, ({
+    cpf: cpf
+  }), null), handler)
+}
+
