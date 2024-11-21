@@ -1,6 +1,6 @@
 <template>
   <ProtectedContent>
-    <div class="w-full p-4 md:p-0 md:w-4/5 md:mx-auto">
+    <div class="w-full p-4 md:p-0 md:w-4/5 md:mx-auto overflow-x-hidden">
       <div class="p-2 border-indigo-50 border-2 rounded-md">
         <div class="p-4 md:pl-8">
           <h1 class="text-indigo-500 font-grotesk font-bold">Professores</h1>

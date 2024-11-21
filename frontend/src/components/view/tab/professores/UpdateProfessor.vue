@@ -132,22 +132,22 @@ const handleTelefoneChanged = () => telefone.value = telefone.value.replace(/[^0
         <button @mousedown="fetchCPF" class="mt-auto">Buscar</button>
       </div>
       <label class="text-xs font-bold">* Informações pessoais</label>
-      <div class="grid grid-cols-3 gap-y-4 gap-x-2 w-fit">
+      <div class="flex flex-col md:grid md:grid-cols-3 gap-y-4 gap-x-2 w-fit">
         <div class="col-span-2">
           <label>Nome</label>
-          <input :disabled="fetching" @input="(_:any) => {onChange(); handleNameChanged()}" v-model="nome" type="text" class="w-96">
+          <input :disabled="fetching" @input="(_:any) => {onChange(); handleNameChanged()}" v-model="nome" type="text" class="w-72 md:w-96">
         </div>
         <div class="col-span-2">
           <label>Formação</label>
-          <input :disabled="fetching" v-model="formacao" @input="onChange" itype="text" class="w-96">
+          <input :disabled="fetching" v-model="formacao" @input="onChange" itype="text" class="w-72 md:w-96">
         </div>
         <div class="col-span-1">
           <label>Telefone</label>
-          <input :disabled="fetching" v-model="telefone" @input="(_:any) => {onChange(); handleTelefoneChanged()}" v-maska="'(##) #####-####'" placeholder="(12) 34567-8910"  type="text">
+          <input class="w-72 md:w-96" :disabled="fetching" v-model="telefone" @input="(_:any) => {onChange(); handleTelefoneChanged()}" v-maska="'(##) #####-####'" placeholder="(12) 34567-8910"  type="text">
         </div>
       </div>
       <label class="text-xs font-bold">* Endereço</label>
-      <div class="grid grid-cols-2 grid-rows-3 gap-y-4 gap-x-4 w-fit">
+      <div class="flex flex-col md:grid md:grid-cols-2 grid-rows-3 gap-y-4 gap-x-4 w-fit">
         <div class="flex gap-x-4">
           <div>
             <label>CEP</label>
@@ -157,10 +157,10 @@ const handleTelefoneChanged = () => telefone.value = telefone.value.replace(/[^0
             <button @mousedown="fetchCep" class="mt-auto">Buscar</button>
           </div>
         </div>
-        <div></div>
+        <div class="md:block hidden"></div>
         <div class="w-96">
           <label>Rua</label>
-          <input disabled v-model="rua" @input="onChange" type="text" class="w-96">
+          <input disabled v-model="rua" @input="onChange" type="text" class="w-72 md:w-96">
         </div>
         <div class="col-span-1">
           <label>Número</label>
@@ -168,7 +168,7 @@ const handleTelefoneChanged = () => telefone.value = telefone.value.replace(/[^0
         </div>
         <div class="col-span-1">
           <label>Bairro</label>
-          <input disabled v-model="bairro" @input="onChange" type="text" class="w-96">
+          <input disabled v-model="bairro" @input="onChange" type="text" class="w-72 md:w-96">
         </div>
         <div class="col-span-1">
           <label>Cidade</label>

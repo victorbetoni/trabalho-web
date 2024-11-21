@@ -18,14 +18,13 @@ function logout() {
 </script>
 
 <template>
-  <div class="p-8 flex justify-around font-grotesk text-indigo-600 border-indigo-600">
+  <div class="px-4 pt-8 pb-4 md:px-8 flex justify-around font-grotesk text-indigo-600 border-indigo-600">
     <div class="flex gap-x-2">
       <img src="/logo.svg" class="h-6 my-auto"/>
-      <h1 class="text-2xl font-bold">Classee</h1>
+      <h1 class="text-2xl font-bold md:block hidden">Classee</h1>
     </div>
     <div class="flex gap-x-8 my-auto items-center">
       <RouterLink to="/professores">Professores</RouterLink>
-      <RouterLink to="/alunos">Alunos</RouterLink>
       <RouterLink to="/aulas">Aulas</RouterLink>
       <RouterLink v-if="!logged" to="/login">Login</RouterLink>
       <button v-else @mousedown="logout">Logout</button>

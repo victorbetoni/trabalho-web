@@ -147,7 +147,7 @@ function fetchProfessores(fetchCurrent: boolean) {
           </div>
         </div>
       </div>
-      <div class="flex justify-end gap-x-2">
+      <div class="flex justify-end gap-x-2 mt-4">
         <button v-if="page > 1" class="px-1 py-1" @mousedown="previous"><img src="/left.svg" class="w-4"/></button>
         <span class="my-auto  font-grotesk font-bold">{{ page }}</span>
         <button v-if="nextPage.length > 0" class="px-1 py-1"><img src="/right.svg" @mousedown="next" class="w-4"/></button>
