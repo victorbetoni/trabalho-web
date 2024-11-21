@@ -1,7 +1,9 @@
 import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
-import { createMemoryHistory, createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 import ListAulas from './components/view/tab/aulas/ListAulas.vue'
 import ProfessoresView from './components/view/ProfessoresView.vue'
 import Login from './components/view/Login.vue';
@@ -20,4 +22,4 @@ const router = createRouter({
 })
 
 
-createApp(App).use(router).mount('#app')
+createApp(App).use(Toast).use(router).mount('#app')

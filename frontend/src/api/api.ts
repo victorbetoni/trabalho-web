@@ -40,6 +40,15 @@ export function POST<A,T>(req: APIRequest<A>, handler: Handler<T>) {
   }).then(x => x.json()).then(j => handler(responseFrom(j)))
 }
 
+export function PUT<A,T>(req: APIRequest<A>, handler: Handler<T>) {
+  fetch(`${req.endpoint}/${req.route}`,{
+    body: req.body == null ? "{}" : JSON.stringify(req.body),
+    method: "PUT",
+    headers: headers,
+    credentials: 'include',
+  }).then(x => x.json()).then(j => handler(responseFrom(j)))
+}
+
 export function GET<A,T>(req: APIRequest<A>, handler: Handler<T>) {
   let filtered: Record<string,any> = req.query == null ? {} : Object.fromEntries(
     Object.entries(req.query).filter(([_, value]) => value !== null && value !== "")

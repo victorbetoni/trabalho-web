@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"strconv"
 	"victorbetoni/trabalho-web/internal/domain/usecase"
 	"victorbetoni/trabalho-web/internal/infra/util"
@@ -13,8 +12,6 @@ import (
 func PostProfessor(ctx *gin.Context) util.Response {
 	input := usecase.ProfessorCreateCaseInput{}
 	if err := ctx.BindJSON(&input); err != nil {
-		fmt.Println(err.Error())
-		fmt.Println("FUDEU AQUI")
 		return util.RespBadRequest
 	}
 	return usecase.NewProfessorCreateCase(uow.Current()).Execute(ctx, input)
@@ -39,4 +36,12 @@ func ListProfessores(ctx *gin.Context) util.Response {
 		Page:  page,
 	}
 	return usecase.NewProfessorListCase(uow.Current()).Execute(ctx, input)
+}
+
+func UpdateProfessor(ctx *gin.Context) util.Response {
+	input := usecase.ProfessorUpdateCaseInput{}
+	if err := ctx.BindJSON(&input); err != nil {
+		return util.RespBadRequest
+	}
+	return usecase.NewProfessorUpdateCase(uow.Current()).Execute(ctx, input)
 }

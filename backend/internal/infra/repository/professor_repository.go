@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"regexp"
 	"victorbetoni/trabalho-web/internal/domain/entity"
 	"victorbetoni/trabalho-web/internal/infra/db"
 
@@ -22,6 +23,7 @@ func NewProfessorRepository(dbConn *sql.DB) *ProfessorRepository {
 }
 
 func (r *ProfessorRepository) Find(ctx context.Context, filter entity.ProfessorFilter) ([]*entity.Professor, error) {
+	filter.CPF = regexp.MustCompile(`\D`).ReplaceAllString(filter.CPF, "")
 	p, err := r.Queries.FindProfessores(ctx, db.FindProfessoresParams{
 		Cpf:    filter.CPF,
 		Nome:   filter.Nome,
@@ -80,8 +82,15 @@ func (r *ProfessorRepository) Create(ctx context.Context, professor *entity.Prof
 
 func (r *ProfessorRepository) Update(ctx context.Context, professor *entity.Professor) error {
 	return r.Queries.UpdateProfessor(ctx, db.UpdateProfessorParams{
-		Nome: professor.Nome,
-		Cpf:  professor.CPF,
+		Nome:     professor.Nome,
+		Cpf:      professor.CPF,
+		Formacao: professor.Formacao,
+		Telefone: professor.Telefone,
+		Cep:      professor.Endereco.CEP,
+		Rua:      professor.Endereco.Rua,
+		Bairro:   professor.Endereco.Bairro,
+		Cidade:   professor.Endereco.Cidade,
+		Numero:   int32(professor.Endereco.Numero),
 	})
 }
 

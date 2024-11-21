@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"victorbetoni/trabalho-web/internal/infra/http/jwt"
 	"victorbetoni/trabalho-web/internal/infra/util"
@@ -20,6 +21,7 @@ func Parse(hf util.CustomHandlerFunc) gin.HandlerFunc {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"status": resp.Status, "message": "Não foi possível fazer parse do body.", "body": "{}"})
 			return
 		}
+		fmt.Println(string(marshaled))
 		ctx.JSON(resp.Status, gin.H{"status": resp.Status, "message": resp.Message, "body": string(marshaled)})
 	}
 }

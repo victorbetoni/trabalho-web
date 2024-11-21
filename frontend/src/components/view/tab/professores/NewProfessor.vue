@@ -6,6 +6,7 @@ import { fetchCEP } from "../../../../api/cep";
 import { allFilled } from "../../../../util/util";
 import Loading from "../../../Loading.vue";
 import ProtectedContent from "../../ProtectedContent.vue";
+import { useToast } from "vue-toastification";
 
 const nome = ref("");
 const cpf = ref("");
@@ -20,6 +21,20 @@ const bairro = ref("");
 const cidade = ref("");
 const numero = ref("");
 
+const toast = useToast();
+
+function clear() {
+  cpf.value = "";
+  cep.value = "";
+  rua.value = "";
+  bairro.value = "";
+  cidade.value = "";
+  numero.value = "";
+  formacao.value = "";
+  telefone.value = "";
+  nome.value = "";
+}
+
 function onChange() {
   errorMessage.value = "";
   if(!allFilled(nome,cpf,telefone,formacao,cep,rua,bairro,cidade,numero)) {
@@ -30,7 +45,7 @@ function onChange() {
 
 function cadastrar() {
   if(!allFilled(nome,cpf,telefone,formacao,cep,rua,bairro,cidade,numero)) {
-    errorMessage.value = "Preencha todos os campos!"
+    toast.error("Preencha todos os campos.", {timeout:5000})
     return
   }
   fetching.value = true
@@ -62,11 +77,14 @@ function cadastrar() {
     nome: nome.value,
     telefone: telefone.value
   }, (resp) => {
+    fetching.value = true;
     if(resp.status != 200) {
       failed.value = true;
-      errorMessage.value = resp.message!;
+      toast.error(resp.message, {timeout:5000})
     }
   })
+  clear();
+  toast.success("Professor cadastrado com sucesso.", {timeout:5000})
 }
 
 function fetchCep() {
@@ -76,7 +94,7 @@ function fetchCep() {
     cidade.value = `${resp.localidade} - ${resp.uf}`
     onChange()
   }, () => {
-    errorMessage.value = "CEP inválido!"
+    toast.error("CEP inválido.", {timeout:5000})
   })
 }
 

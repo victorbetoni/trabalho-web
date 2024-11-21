@@ -4,6 +4,7 @@ import Professor from '../../../../model/Professor';
 import { findProfessores } from '../../../../api/professores';
 import { APIResponse } from '../../../../api/api';
 import ProtectedContent from '../../ProtectedContent.vue';
+import { useToast } from 'vue-toastification';
 
 const professores: Ref<Professor[]> = ref([])
 
@@ -11,10 +12,10 @@ const cpf = ref("")
 const nome = ref("")
 const failed = ref(false)
 const fetching = ref(false)
-const errorMessage = ref("")
 
 const page = ref(1)
 
+const toast = useToast()
 
 function fetchProfessores() {
   fetching.value = true;
@@ -22,13 +23,11 @@ function fetchProfessores() {
     fetching.value = false;
     if(resp.status != 200) {
       failed.value = true;
-      errorMessage.value = resp.message!;
+      toast.error(resp.message);
       return
     }
-    errorMessage.value = "";
     failed.value = false;
     professores.value = resp.body! as Professor[];
-    console.log(professores.value)
   })
 }
 
@@ -58,7 +57,7 @@ function fetchProfessores() {
             <th class="w-24">Aulas dadas</th>
             <th>Ações</th>
           </tr>
-          <tr class="font-grotesk text-lg" v-for="(professor, index) in professores" :class="[index == professores.length - 1 ? 'border-b-0' : '']">
+          <tr class="font-grotesk text-sm" v-for="(professor, index) in professores" :class="[index == professores.length - 1 ? 'border-b-0' : '']">
             <td class="w-80">
               {{ professor.nome }}
             </td>

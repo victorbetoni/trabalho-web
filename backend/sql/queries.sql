@@ -40,7 +40,7 @@ AND (sqlc.arg(id) = "" OR ID LIKE sqlc.arg(id))
 LIMIT ? OFFSET ?;
 
 -- name: UpdateProfessor :exec
-UPDATE Professores SET Nome = ? WHERE CPF = ?;
+UPDATE Professores SET Nome = ?, Formacao = ?, Telefone = ?, CEP = ?, Rua = ?, Bairro = ?, Cidade = ?, Numero = ? WHERE CPF = ?;
 
 -- name: UpdateAluno :exec
 UPDATE Alunos SET Nome = ? WHERE GRR = ?;

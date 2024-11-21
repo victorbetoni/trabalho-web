@@ -18,6 +18,7 @@ type route struct {
 var routes = []route{
 	{path: "/professor", requireAuth: true, method: "GET", handler: handlers.ListProfessores},
 	{path: "/professor", requireAuth: true, method: "POST", handler: handlers.PostProfessor},
+	{path: "/professor", requireAuth: true, method: "PUT", handler: handlers.UpdateProfessor},
 	{path: "/login", requireAuth: false, method: "POST", handler: handlers.Login},
 	{path: "/logout", requireAuth: false, method: "GET", handler: handlers.Logout},
 	{path: "/checkSession", requireAuth: true, method: "GET", handler: handlers.CheckSession},
@@ -28,13 +29,14 @@ type httpMethod func(e *gin.Engine, path string, hf gin.HandlerFunc)
 var methods = map[string]httpMethod{
 	"POST": post,
 	"GET":  get,
+	"PUT":  put,
 }
 
 func Build() *gin.Engine {
 	engine := gin.Default()
 	engine.Use(func(c *gin.Context) {
 		c.Header("Content-Type", "application/json")
-		c.Header("Access-Control-Allow-Origin", "http://localhost:8092")
+		c.Header("Access-Control-Allow-Origin", "http://localhost:8091")
 		c.Header("Access-Control-Allow-Credentials", "true")
 		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
 		c.Header("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
@@ -62,4 +64,8 @@ func post(e *gin.Engine, path string, hf gin.HandlerFunc) {
 
 func get(e *gin.Engine, path string, hf gin.HandlerFunc) {
 	e.GET(path, hf)
+}
+
+func put(e *gin.Engine, path string, hf gin.HandlerFunc) {
+	e.PUT(path, hf)
 }
