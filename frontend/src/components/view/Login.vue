@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { login as apiLogin } from '../../api/auth'; 
 import { allFilled } from '../../util/util';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import Loading from '../Loading.vue';
 
 const username = ref("");
@@ -33,8 +33,8 @@ function login() {
 </script>
 
 <template>
-  <div class="h-[80vh] flex flex-col justify-center">
-    <div class="shadow-lg shadow-indigo-300 border-b-[6px] mx-auto gap-y-4 flex flex-col my-auto w-1/4 rounded-lg p-6 border-indigo-500 border-[1px]">
+  <div class="h-[80vh] flex flex-col justify-center md:p-0 p-8 ">
+    <div class="shadow-lg shadow-indigo-300 border-b-[6px] mx-auto gap-y-4 flex flex-col my-auto w-full md:w-1/4 rounded-lg p-6 border-indigo-500 border-[1px]">
       <div class="mb-8">
         <div class="flex gap-x-4 justify-center">
           <img src="/logo.svg" class="w-8"/>

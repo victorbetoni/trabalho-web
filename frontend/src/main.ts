@@ -8,11 +8,12 @@ import ListAulas from './components/view/tab/aulas/ListAulas.vue'
 import ProfessoresView from './components/view/ProfessoresView.vue'
 import Login from './components/view/Login.vue';
 import Home from './components/view/Home.vue';
+import AulasView from './components/view/AulasView.vue';
 
 const routes = [
   { path: '/', component: Home },
   { path: '/login', component: Login },
-  { path: '/aulas', component: ListAulas },
+  { path: '/aulas', component: AulasView },
   { path: '/professores', component: ProfessoresView },
 ]
 
