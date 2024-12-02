@@ -125,7 +125,7 @@ function fetchProfessores(fetchCurrent: boolean) {
               {{ professor.formacao }}
             </td>
             <td class="w-24">
-              {{ professor.aulasDadas }}
+              {{ professor.aulas_dadas }}
             </td>
             <td>
               <button class="bg-red-400 hover:bg-red-500" @mousedown="deleting = professor.cpf">Excluir</button>
@@ -140,7 +140,7 @@ function fetchProfessores(fetchCurrent: boolean) {
             <p>{{ professor.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4') }}</p>
             <p>{{ professor.telefone }}</p>
             <p>Formação: {{ professor.formacao }}</p>
-            <p>Aulas dadas: {{ professor.aulasDadas == null || professor.aulasDadas == undefined ? 0 : professor.aulasDadas }}</p>
+            <p>Aulas dadas: {{ professor.aulas_dadas == null || professor.aulas_dadas == undefined ? 0 : professor.aulas_dadas }}</p>
           </div>
           <div @mousedown="deleting = professor.cpf" class="h-fit mt-auto w-fit rounded-md p-2 bg-red-400">
             <img src="/trash.svg" class="w-6">

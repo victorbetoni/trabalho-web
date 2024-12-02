@@ -12,9 +12,6 @@
           <div :class="[currentIndex == 1 ? 'header-active' : 'header-inactive']" @mousedown="changeTab(1)">
             <h6>Cadastrar</h6>
           </div>
-          <div :class="[currentIndex == 2 ? 'header-active' : 'header-inactive']" @mousedown="changeTab(2)">
-            <h6>Presenças</h6>
-          </div>
         </div>
         <div class="p-2 md:p-8">
           <NewAula v-if="currentIndex==1"/>

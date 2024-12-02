@@ -85,4 +85,10 @@ func registerRepositories(uow *uow.Uow) {
 		repo.Queries = db.New(tx)
 		return repo
 	})
+
+	uow.Register("AulaRepository", func(tx *sql.Tx) interface{} {
+		repo := repository.NewAulaRepository(uow.Db)
+		repo.Queries = db.New(tx)
+		return repo
+	})
 }

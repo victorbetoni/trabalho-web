@@ -17,19 +17,13 @@ type Aula struct {
 	ID                  string    `json:"id"`
 	Data                time.Time `json:"data"`
 	Cargahorariaminutos int32     `json:"cargahorariaminutos"`
-	Materiaid           string    `json:"materiaid"`
+	Titulo              string    `json:"titulo"`
 	Professor           string    `json:"professor"`
 }
 
 type Login struct {
 	Username string `json:"username"`
 	Senha    string `json:"senha"`
-}
-
-type Materia struct {
-	ID                  string `json:"id"`
-	Nome                string `json:"nome"`
-	Cargahorariaminutos int32  `json:"cargahorariaminutos"`
 }
 
 type Presenca struct {

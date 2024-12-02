@@ -1,7 +1,9 @@
 import type Professor from "./Professor";
 
 export interface Aula {
+  id: string;
   professor: Professor;
   titulo: string;
-  time: number;
+  carga_horaria: number;
+  data: string;
 }

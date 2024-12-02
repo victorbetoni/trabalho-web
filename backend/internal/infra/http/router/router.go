@@ -21,6 +21,10 @@ var routes = []route{
 	{path: "/professor", requireAuth: true, method: "PUT", handler: handlers.UpdateProfessor},
 	{path: "/professor", requireAuth: true, method: "DELETE", handler: handlers.DeleteProfessor},
 
+	{path: "/aula", requireAuth: true, method: "POST", handler: handlers.PostAula},
+	{path: "/aula", requireAuth: true, method: "DELETE", handler: handlers.DeleteAula},
+	{path: "/aula", requireAuth: true, method: "GET", handler: handlers.ListAulas},
+
 	{path: "/login", requireAuth: false, method: "POST", handler: handlers.Login},
 	{path: "/logout", requireAuth: false, method: "GET", handler: handlers.Logout},
 	{path: "/checkSession", requireAuth: true, method: "GET", handler: handlers.CheckSession},

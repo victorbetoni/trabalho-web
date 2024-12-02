@@ -16,6 +16,13 @@ type ProfessorRepositoryInterface interface {
 	RepositoryInterface
 }
 
+type AulaRepositoryInterface interface {
+	Find(ctx context.Context, filter entity.AulaFilter) ([]*entity.Aula, error)
+	Create(ctx context.Context, aula *entity.Aula) error
+	Delete(ctx context.Context, id string) error
+	RepositoryInterface
+}
+
 type LoginRepositoryInterface interface {
 	FindLogin(ctx context.Context, username string) (string, error)
 }

@@ -2,7 +2,7 @@ import type Endereco from "./Endereco";
 
 export default interface Professor {
   nome: string;
-  aulasDadas: number;
+  aulas_dadas: number;
   cpf: string;
   formacao: string;
   telefone: string;

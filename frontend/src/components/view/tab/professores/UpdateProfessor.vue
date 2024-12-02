@@ -50,7 +50,7 @@ function update() {
   }
   fetching.value = true
   updateProfessor({
-    aulasDadas: 0,
+    aulas_dadas: 0,
     cpf: cpf.value,
     endereco: {
       cep: cep.value,

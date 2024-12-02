@@ -10,6 +10,17 @@ import (
 	"time"
 )
 
+const aulasDadas = `-- name: AulasDadas :one
+SELECT COUNT(*) FROM Aulas WHERE Professor = ?
+`
+
+func (q *Queries) AulasDadas(ctx context.Context, professor string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, aulasDadas, professor)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const createAluno = `-- name: CreateAluno :exec
 INSERT INTO Alunos (GRR, Nome) VALUES (?,?)
 `
@@ -25,40 +36,25 @@ func (q *Queries) CreateAluno(ctx context.Context, arg CreateAlunoParams) error 
 }
 
 const createAula = `-- name: CreateAula :exec
-INSERT INTO Aulas (ID, MateriaID, Professor, CargaHorariaMinutos, Data) VALUES (?,?,?,?,?)
+INSERT INTO Aulas (ID, Data, Professor, CargaHorariaMinutos, Titulo) VALUES (?,?,?,?,?)
 `
 
 type CreateAulaParams struct {
 	ID                  string    `json:"id"`
-	Materiaid           string    `json:"materiaid"`
+	Data                time.Time `json:"data"`
 	Professor           string    `json:"professor"`
 	Cargahorariaminutos int32     `json:"cargahorariaminutos"`
-	Data                time.Time `json:"data"`
+	Titulo              string    `json:"titulo"`
 }
 
 func (q *Queries) CreateAula(ctx context.Context, arg CreateAulaParams) error {
 	_, err := q.db.ExecContext(ctx, createAula,
 		arg.ID,
-		arg.Materiaid,
+		arg.Data,
 		arg.Professor,
 		arg.Cargahorariaminutos,
-		arg.Data,
+		arg.Titulo,
 	)
-	return err
-}
-
-const createMateria = `-- name: CreateMateria :exec
-INSERT INTO Materias (ID, Nome, CargaHorariaMinutos) VALUES (?,?,?)
-`
-
-type CreateMateriaParams struct {
-	ID                  string `json:"id"`
-	Nome                string `json:"nome"`
-	Cargahorariaminutos int32  `json:"cargahorariaminutos"`
-}
-
-func (q *Queries) CreateMateria(ctx context.Context, arg CreateMateriaParams) error {
-	_, err := q.db.ExecContext(ctx, createMateria, arg.ID, arg.Nome, arg.Cargahorariaminutos)
 	return err
 }
 
@@ -125,15 +121,6 @@ func (q *Queries) DeleteAula(ctx context.Context, id string) error {
 	return err
 }
 
-const deleteMateria = `-- name: DeleteMateria :exec
-DELETE FROM Materias WHERE ID = ?
-`
-
-func (q *Queries) DeleteMateria(ctx context.Context, id string) error {
-	_, err := q.db.ExecContext(ctx, deleteMateria, id)
-	return err
-}
-
 const deleteProfessor = `-- name: DeleteProfessor :exec
 DELETE FROM Professores WHERE CPF = ?
 `
@@ -188,41 +175,39 @@ func (q *Queries) FindAluno(ctx context.Context, arg FindAlunoParams) ([]Aluno, 
 }
 
 const findAula = `-- name: FindAula :many
-SELECT aulas.id, data, aulas.cargahorariaminutos, materiaid, professor, materias.id, nome, materias.cargahorariaminutos FROM Aulas
-INNER JOIN Materias ON Materias.ID = MateriaID
-WHERE (? = "" OR Materias.Nome LIKE ?) 
-AND (? = "" OR Materias.ID LIKE ?) 
-AND (? = "" OR Aulas.ID LIKE ?)
-LIMIT ? OFFSET ?
+SELECT id, data, cargahorariaminutos, titulo, professor, cpf, nome, formacao, telefone, rua, bairro, cidade, cep, numero FROM Aulas
+INNER JOIN Professores ON Professores.CPF = Aulas.Professor
+WHERE (? = "" OR Professores.CPF LIKE ?) 
+ORDER BY Aulas.Data DESC LIMIT ? OFFSET ?
 `
 
 type FindAulaParams struct {
-	Materianome string `json:"materianome"`
-	Materiaid   string `json:"materiaid"`
-	Aulaid      string `json:"aulaid"`
-	Limit       int32  `json:"limit"`
-	Offset      int32  `json:"offset"`
+	Professor string `json:"professor"`
+	Limit     int32  `json:"limit"`
+	Offset    int32  `json:"offset"`
 }
 
 type FindAulaRow struct {
-	ID                    string    `json:"id"`
-	Data                  time.Time `json:"data"`
-	Cargahorariaminutos   int32     `json:"cargahorariaminutos"`
-	Materiaid             string    `json:"materiaid"`
-	Professor             string    `json:"professor"`
-	ID_2                  string    `json:"id_2"`
-	Nome                  string    `json:"nome"`
-	Cargahorariaminutos_2 int32     `json:"cargahorariaminutos_2"`
+	ID                  string    `json:"id"`
+	Data                time.Time `json:"data"`
+	Cargahorariaminutos int32     `json:"cargahorariaminutos"`
+	Titulo              string    `json:"titulo"`
+	Professor           string    `json:"professor"`
+	Cpf                 string    `json:"cpf"`
+	Nome                string    `json:"nome"`
+	Formacao            string    `json:"formacao"`
+	Telefone            string    `json:"telefone"`
+	Rua                 string    `json:"rua"`
+	Bairro              string    `json:"bairro"`
+	Cidade              string    `json:"cidade"`
+	Cep                 string    `json:"cep"`
+	Numero              int32     `json:"numero"`
 }
 
 func (q *Queries) FindAula(ctx context.Context, arg FindAulaParams) ([]FindAulaRow, error) {
 	rows, err := q.db.QueryContext(ctx, findAula,
-		arg.Materianome,
-		arg.Materianome,
-		arg.Materiaid,
-		arg.Materiaid,
-		arg.Aulaid,
-		arg.Aulaid,
+		arg.Professor,
+		arg.Professor,
 		arg.Limit,
 		arg.Offset,
 	)
@@ -237,11 +222,17 @@ func (q *Queries) FindAula(ctx context.Context, arg FindAulaParams) ([]FindAulaR
 			&i.ID,
 			&i.Data,
 			&i.Cargahorariaminutos,
-			&i.Materiaid,
+			&i.Titulo,
 			&i.Professor,
-			&i.ID_2,
+			&i.Cpf,
 			&i.Nome,
-			&i.Cargahorariaminutos_2,
+			&i.Formacao,
+			&i.Telefone,
+			&i.Rua,
+			&i.Bairro,
+			&i.Cidade,
+			&i.Cep,
+			&i.Numero,
 		); err != nil {
 			return nil, err
 		}
@@ -265,50 +256,6 @@ func (q *Queries) FindLogin(ctx context.Context, username string) (string, error
 	var senha string
 	err := row.Scan(&senha)
 	return senha, err
-}
-
-const findMateria = `-- name: FindMateria :many
-SELECT id, nome, cargahorariaminutos FROM Materias
-WHERE (? = "" OR Nome LIKE ?) 
-AND (? = "" OR ID LIKE ?) 
-LIMIT ? OFFSET ?
-`
-
-type FindMateriaParams struct {
-	Nome   string `json:"nome"`
-	ID     string `json:"id"`
-	Limit  int32  `json:"limit"`
-	Offset int32  `json:"offset"`
-}
-
-func (q *Queries) FindMateria(ctx context.Context, arg FindMateriaParams) ([]Materia, error) {
-	rows, err := q.db.QueryContext(ctx, findMateria,
-		arg.Nome,
-		arg.Nome,
-		arg.ID,
-		arg.ID,
-		arg.Limit,
-		arg.Offset,
-	)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	var items []Materia
-	for rows.Next() {
-		var i Materia
-		if err := rows.Scan(&i.ID, &i.Nome, &i.Cargahorariaminutos); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
 }
 
 const findProfessores = `-- name: FindProfessores :many
@@ -376,42 +323,6 @@ type UpdateAlunoParams struct {
 
 func (q *Queries) UpdateAluno(ctx context.Context, arg UpdateAlunoParams) error {
 	_, err := q.db.ExecContext(ctx, updateAluno, arg.Nome, arg.Grr)
-	return err
-}
-
-const updateAula = `-- name: UpdateAula :exec
-UPDATE Aulas SET MateriaID = ?, Professor = ?, Data = ? WHERE ID = ?
-`
-
-type UpdateAulaParams struct {
-	Materiaid string    `json:"materiaid"`
-	Professor string    `json:"professor"`
-	Data      time.Time `json:"data"`
-	ID        string    `json:"id"`
-}
-
-func (q *Queries) UpdateAula(ctx context.Context, arg UpdateAulaParams) error {
-	_, err := q.db.ExecContext(ctx, updateAula,
-		arg.Materiaid,
-		arg.Professor,
-		arg.Data,
-		arg.ID,
-	)
-	return err
-}
-
-const updateMateria = `-- name: UpdateMateria :exec
-UPDATE Materias SET Nome = ?, CargaHorariaMinutos = ? WHERE ID = ?
-`
-
-type UpdateMateriaParams struct {
-	Nome                string `json:"nome"`
-	Cargahorariaminutos int32  `json:"cargahorariaminutos"`
-	ID                  string `json:"id"`
-}
-
-func (q *Queries) UpdateMateria(ctx context.Context, arg UpdateMateriaParams) error {
-	_, err := q.db.ExecContext(ctx, updateMateria, arg.Nome, arg.Cargahorariaminutos, arg.ID)
 	return err
 }
 

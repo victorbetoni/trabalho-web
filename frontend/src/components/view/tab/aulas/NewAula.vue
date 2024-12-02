@@ -11,6 +11,7 @@ const toast = useToast();
 const ok = ref(false);
 const cpf = ref("");
 const nomeProfessor = ref("");
+const carga = ref(0);
 const titulo = ref("");
 const data = ref("");
 const hora = ref("");
@@ -31,14 +32,11 @@ function fetchProfessor() {
 }
 
 function submit() {
-  if(!allFilled(cpf, titulo, data, hora)) {
+  if(!allFilled(cpf, titulo, data, hora, carga)) {
     toast.error("Preencha todos os campos.");
     return
   }
-  const dataHoraStr = `${data.value}T${hora.value}:00`;
-  const dataHora = new Date(dataHoraStr);
-  console.log(Math.floor(dataHora.getTime() / 1000))
-  createAula(cpf.value, titulo.value, Math.floor(dataHora.getTime() / 1000), (resp) => {
+  createAula(cpf.value, titulo.value, data.value, hora.value, carga.value, (resp) => {
     if(resp.status != 200) {
       toast.error(resp.message);
       return
@@ -52,6 +50,7 @@ function cancel() {
   cpf.value = "";
   nomeProfessor.value = "";
   titulo.value = "";
+  carga.value = 0;
   ok.value = false;
 }
 
@@ -83,6 +82,10 @@ function cancel() {
           <label>Horário</label>
           <input :disabled="!ok" v-model="hora" type="time"/>
         </div>
+      </div>
+      <div>
+        <label>Carga horária (minutos)</label>
+          <input :disabled="!ok" v-model="carga" type="number"/>
       </div>
       <div v-if="ok" class="gap-x-2 flex">
         <button @mousedown="cancel" class="w-32 bg-red-400 hover:bg-red-400">Cancelar</button>
