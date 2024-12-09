@@ -103,28 +103,30 @@ function fetchProfessores(fetchCurrent: boolean) {
       </header>
       <div class="mt-8 w-full md:block hidden">
         <table class=" flex flex-col text-gray-600">
-          <tr class="border-b-0">
-            <th class="w-80">Nome</th>
-            <th class="w-36">CPF</th>
-            <th class="w-48">Telefone</th>
-            <th class="w-96">Formação</th>
-            <th class="w-24">Aulas dadas</th>
-            <th>Ações</th>
-          </tr>
+          <thead class="w-full">
+            <tr class="border-b-0">
+              <th class="w-1/5">Nome</th>
+              <th class="w-1/5">CPF</th>
+              <th class="w-1/6">Telefone</th>
+              <th class="w-1/5">Formação</th>
+              <th class="w-1/12">Aulas dadas</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
           <tr class="font-grotesk text-sm" v-for="(professor, index) in professores" :class="[index == professores.length - 1 ? 'border-b-0' : '']">
-            <td class="w-80">
+            <td class="w-1/5">
               {{ professor.nome }}
             </td>
-            <td class="w-36">
+            <td class="w-1/5">
               {{ professor.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4') }}
             </td>
-            <td class="w-48">
+            <td class="w-1/6">
               {{ professor.telefone }} 
             </td>
-            <td class="w-96">
+            <td class="w-1/5">
               {{ professor.formacao }}
             </td>
-            <td class="w-24">
+            <td class="w-1/12">
               {{ professor.aulas_dadas }}
             </td>
             <td>

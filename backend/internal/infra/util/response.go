@@ -25,6 +25,11 @@ var (
 		Message: "Preencha todos os campos.",
 		Body:    "",
 	}
+	RespCPFInvalido = Response{
+		Status:  http.StatusBadRequest,
+		Message: "CPF inválido.",
+		Body:    "",
+	}
 )
 
 func Ok(body any) Response {

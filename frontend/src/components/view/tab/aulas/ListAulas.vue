@@ -109,30 +109,34 @@ function formatarData(data: string) {
       </header>
       <div class="mt-8 w-full md:block hidden">
         <table class=" flex flex-col text-gray-600">
-          <tr class="border-b-0">
-            <th class="w-80">Professor</th>
-            <th class="w-96">Título</th>
-            <th class="w-48">Data</th>
-            <th class="w-48">Carga Horária</th>
-            <th>Ações</th>
-          </tr>
-          <tr class="font-grotesk text-sm" v-for="(aula, index) in aulas" :class="[index == aulas.length - 1 ? 'border-b-0' : '']">
-            <td class="w-80">
-              {{ aula.professor.nome }}
-            </td>
-            <td class="w-96">
-              {{ aula.titulo }}
-            </td>
-            <td class="w-48">
-              {{ formatarData(aula.data) }} 
-            </td>
-            <td class="w-48">
-              {{ aula.carga_horaria }} 
-            </td>
-            <td>
-              <button class="bg-red-400 hover:bg-red-500" @mousedown="deleting = aula.id">Excluir</button>
-            </td>
-          </tr>
+          <thead>
+            <tr class="border-b-0">
+              <th class="w-1/4">Professor</th>
+              <th class="w-1/4">Título</th>
+              <th class="w-1/6">Data</th>
+              <th class="w-1/6">Carga Horária</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="font-grotesk text-sm" v-for="(aula, index) in aulas" :class="[index == aulas.length - 1 ? 'border-b-0' : '']">
+              <td class="w-1/4">
+                {{ aula.professor.nome }}
+              </td>
+              <td class="w-1/4">
+                {{ aula.titulo }}
+              </td>
+              <td class="w-1/6">
+                {{ formatarData(aula.data) }} 
+              </td>
+              <td class="w-1/6">
+                {{ aula.carga_horaria }} 
+              </td>
+              <td>
+                <button class="bg-red-400 hover:bg-red-500" @mousedown="deleting = aula.id">Excluir</button>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
       <div class="block md:hidden mt-8 font-grotesk text-gray-600 text-xs">

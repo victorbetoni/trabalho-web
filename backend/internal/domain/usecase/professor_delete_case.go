@@ -33,8 +33,8 @@ func (u *ProfessorDeleteCase) Execute(ctx context.Context, in ProfessorDeleteCas
 	return u.Uow.Do(ctx, func(uow *uow.Uow) util.Response {
 
 		repo := repository.GetProfessorRepository(ctx, uow)
-		if in.Valid() != nil {
-			return util.RespBadRequest
+		if err := in.Valid(); err != nil {
+			return util.BadRequestErr(err)
 		}
 
 		if err := repo.Delete(ctx, in.CPF); err != nil {

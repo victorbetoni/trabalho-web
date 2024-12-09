@@ -48,8 +48,8 @@ func (u *AulaCreateCase) Execute(ctx context.Context, in AulaCreateCaseInput) ut
 		profRepo := repository.GetProfessorRepository(ctx, uow)
 		aulaRepo := repository.GetAulaRepository(ctx, uow)
 
-		if in.Valid() != nil {
-			return util.RespBadRequest
+		if err := in.Valid(); err != nil {
+			return util.BadRequestErr(err)
 		}
 
 		v, err := profRepo.FindOne(ctx, entity.ProfessorFilter{

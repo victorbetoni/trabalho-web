@@ -43,8 +43,8 @@ func (u *ProfessorUpdateCase) Execute(ctx context.Context, in ProfessorUpdateCas
 	return u.Uow.Do(ctx, func(uow *uow.Uow) util.Response {
 
 		repo := repository.GetProfessorRepository(ctx, uow)
-		if in.Valid() != nil {
-			return util.RespBadRequest
+		if err := in.Valid(); err != nil {
+			return util.BadRequestErr(err)
 		}
 
 		prof := &entity.Professor{

@@ -49,22 +49,8 @@ function cadastrar() {
     return
   }
   fetching.value = true
-  console.log(JSON.stringify({
-    aulasDadas: 0,
-    cpf: cpf.value,
-    endereco: {
-      cep: cep.value,
-      cidade: cidade.value,
-      numero: numero.value,
-      bairro: bairro.value,
-      rua: rua.value
-    },
-    formacao: formacao.value,
-    nome: nome.value,
-    telefone: telefone.value
-  }))
   createProfessor({
-    aulasDadas: 0,
+    aulas_dadas: 0,
     cpf: cpf.value,
     endereco: {
       cep: cep.value,
@@ -81,10 +67,11 @@ function cadastrar() {
     if(resp.status != 200) {
       failed.value = true;
       toast.error(resp.message, {timeout:5000})
+      return;
     }
+    clear();
+    toast.success("Professor cadastrado com sucesso.", {timeout:5000})
   })
-  clear();
-  toast.success("Professor cadastrado com sucesso.", {timeout:5000})
 }
 
 function fetchCep() {
